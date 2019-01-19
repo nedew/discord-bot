@@ -17,6 +17,6 @@
   "author": "",
   "license": "ISC",
   "engines": {
-    "node": "8.9.4"
+    "node": "10.4.1"
   }
 }
