@@ -2,44 +2,23 @@
 
 'use strict';
 /*
-MIT License
-
-Copyright (c) 2017 Alfred Gutierrez
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Copyright (c) 2016-2018 Alfred Gutierrez
+Released under the MIT license
+https://github.com/alfg/overwatch-api/blob/master/LICENSE
 */
 
 // overwatch-apiの読み込み
 const overwatch = require('overwatch-api');
 
 // configファイルからprefixのみ読み込む
-const { prefix } = require('../config.json')
-
-// Botがいるチャンネルに .ow で始まる投稿がされた際の処理
-// app.jsからreturnOverwatchDataを呼び出す為にexportsしてる
+const { prefix, icons } = require('../config.json');
 
 module.exports = {
   name: 'ow',
   aliases: ['overwatch', 'おば'],
   description: 'Overwatchの統計を返す',
   args: true,
-  usage: `<battletag>\` または \`${prefix}${this.name} <battletag> <pc/xbl/psn> <us/eu/kr/cn/global>\`\n例: \`${prefix}${this.name} nedew#11506 pc us\``,
+  usage: `<battletag>\` または \`${prefix}ow <battletag> <pc/xbl/psn> <us/eu/kr/cn/global>\`\n例: \`${prefix}ow nedew#11506 pc us\``,
   guildOnly: false,
   cooldown: 4,
   execute(message, args) {
@@ -73,19 +52,20 @@ module.exports = {
         err ? reject() : resolve(data);
       });
     });
+
     Promise.all([owGetProf, owGetStats])
     .then((result) => {
       const gottenProfile = result[0], gottenStats = result[1];
       // Battle Tag
       const playerName = tag.replace('-', '#');
-
+    
       //戦績の公開範囲によって分岐
       if (!gottenProfile.private) {
         message.channel.send({embed: {
           color: 16751616,
           author: {
             name: 'OVERWATCH',
-            icon_url: 'https://i.gyazo.com/a5912ba9b4aca2e799f96d756f75b0d8.png'
+            icon_url: icons.ow_icon
           },
           title: 'Stats for ' + playerName,
           url: `https://playoverwatch.com/ja-jp/career/${platform}/${playerName.replace('#', '-')}`,
@@ -146,7 +126,7 @@ module.exports = {
           color: 16751616,
           author: {
             name: 'OVERWATCH',
-            icon_url: 'https://i.gyazo.com/a5912ba9b4aca2e799f96d756f75b0d8.png'
+            icon_url: icons.ow_icon
           },
           title: 'Stats for ' + playerName,
           url: `https://playoverwatch.com/ja-jp/career/${platform}/${playerName.replace('#', '-')}`,
@@ -169,13 +149,10 @@ module.exports = {
           ]
         }}); 
       }
-
-      // 取得した内容の確認用
-      // console.log(result);
-
+    
     }).catch(() => {
-      console.log('Promise Error')
-      message.reply('統計データ取得時にエラーが発生しました')
+      console.log('Promise Error');
+      message.reply('統計データ取得時にエラーが発生しました');
       return message.channel.send(owUsageMsg);
     });
   }

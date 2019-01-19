@@ -2,7 +2,8 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 
-const ow = require('./commands/ow.js');
+// app.jsから扱いたい関数を記述しているファイルの読み込み
+const func = require('./js/functions');
 // configファイルから読み込み
 const { prefix, token } = require('./config.json');
 
@@ -26,8 +27,10 @@ const cooldowns = new Discord.Collection();
 // ready!!!
 client.once('ready', () => {
   console.log('ready!');
-});
 
+  // functions.jsにある処理を実行
+  func.confirmationMcServerStatus(client);
+});
 
 
 // BOTが居るチャンネルにメッセージが発せられた時
@@ -47,26 +50,25 @@ client.on('message', message => {
   if (!command) return;
 
   // guildOnly === true なコマンドがDM上で実行されることを拒否
-  if (command.guildOnly && message.channel.type !== 'text') {
+  if (command.guildOnly && message.channel.type !== 'text')
     return message.reply('ダイレクトメッセージ上ではこのコマンドは実行できません');
-  }
+
+  // 特定のユーザ専用のコマンド(specificUserOnly === true)が非対象のユーザに実行されることを阻止
+  if (command.specificUserOnly && message.author.id !== command.specificUserOnly)
+    return message.reply('このコマンドは特定のユーザのみ実行可能です');
 
   // args === true なコマンドが引数無しで実行されることを防ぐ
   if (command.args && !args.length) {
     let reply = 'そのコマンドの実行に必要な値が入力されていません';
 
     // usageが設定されている場合はその内容も追加
-    if (command.usage) {
-      reply += `\n使用方法: \`${prefix}${command.name} ${command.usage}`;
-    }
+    if (command.usage) reply += `\n使用方法: \`${prefix}${command.name} ${command.usage}`;
     
     return message.channel.send(reply);
   }
 
   // Bot起動後初めて実行されたコマンドであればオブジェクトを作成
-  if (!cooldowns.has(command.name)) {
-    cooldowns.set(command.name, new Discord.Collection);
-  }
+  if (!cooldowns.has(command.name)) cooldowns.set(command.name, new Discord.Collection);
 
   // クールダウンの処理に必要な変数宣言
   const now = Date.now();
@@ -95,13 +97,6 @@ client.on('message', message => {
     console.error(error);
     message.reply('コマンドの実行に失敗しました');
   }
-
-  // .tenki
-
-  // .alert
-
-  // .rain
-
 
 })
 
