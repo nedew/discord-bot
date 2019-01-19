@@ -1,0 +1,8 @@
+{
+  "name": "discord-bot",
+  "description": "DiscordのBot",
+  "repository": "https://github.com/nedew/Discord-Bot",
+  "logo": "",
+  "keywords": ["node"],
+  "image": "heroku/nodejs"
+}
