@@ -46,6 +46,7 @@ exports.confirmationMcServerStatus = (client) => {
       // 前回取得時からサーバー状態が更新された場合のみ通知（例外として初回時も実行される）
       if (serverStatus !== data.online) {
         serverStatus = data.online;
+        console.log(data.online);
         let statusText;
 
         if (data.online) {
