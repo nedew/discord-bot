@@ -1,5 +1,6 @@
 'use strict';
 const fs = require('fs');
+// discord.js の読み込み
 const Discord = require('discord.js');
 
 // app.jsから扱いたい関数を記述しているファイルの読み込み
