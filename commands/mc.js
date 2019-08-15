@@ -1,6 +1,6 @@
 'use strict';
 const request = require('request');
-const { mc_address, icons } = require('../config.json');
+const { mc, icons } = require('../config.json');
 
 // 初期値
 let timestamp = Date.now();
@@ -25,7 +25,7 @@ module.exports = {
 
       // Get request options
       let options = {
-        url: `https://api.mcsrvstat.us/1/${mc_address}`,
+        url: `https://api.mcsrvstat.us/1/${mc.address}`,
         method: 'GET',
         json: true
       }
@@ -38,7 +38,7 @@ module.exports = {
           icon_url: icons.mc_icon
         },
         title: 'Corrent server status',
-        url: `https://mcsrvstat.us/server/${mc_address}`,
+        url: `https://mcsrvstat.us/server/${mc.address}`,
         description: ``,
         timestamp: new Date(),
         footer: {
@@ -48,7 +48,7 @@ module.exports = {
         fields: [
           {
             name: 'Address',
-            value: mc_address,
+            value: mc.address,
             inline: true
           }
         ]

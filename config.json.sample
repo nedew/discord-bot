@@ -1,0 +1,13 @@
+{
+  "prefix": ".",
+  "token": "discord_bot_token",
+  "discord_channel_id": "channel_id",
+  "mc": {
+    "port": 11111,
+    "address": "server_address"
+  },
+  "icons": {
+    "mc_icon": "icon_img_url",
+    "ow_icon": "icon_img_url"
+  }
+}

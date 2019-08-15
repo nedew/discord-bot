@@ -1,11 +1,11 @@
 'use strict';
 const request = require('request');
-const { mc_address, discord_channel_id, icons } = require('../config.json');
+const { mc, discord_channel_id, icons } = require('../config.json');
 
 exports.confirmationMcServerStatus = (client) => {
   let serverStatus;
   let options = {
-    url: `https://mcapi.us/server/status?ip=${mc_address}`,
+    url: `https://mcapi.us/server/status?ip=${mc.address}`,
     method: 'GET',
     json: true
   }
@@ -18,7 +18,7 @@ exports.confirmationMcServerStatus = (client) => {
       icon_url: icons.mc_icon
     },
     title: 'The status of the server has been updated.',
-    url: `https://mcsrvstat.us/server/${mc_address}`,
+    url: `https://mcsrvstat.us/server/${mc.address}`,
     description: ``,
     timestamp: new Date(),
     footer: {
@@ -28,7 +28,7 @@ exports.confirmationMcServerStatus = (client) => {
     fields: [
       {
         name: 'Address',
-        value: mc_address,
+        value: mc.address,
         inline: true
       }
     ]
