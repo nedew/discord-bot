@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
-    "async": "^2.6.1",
+    "async": "^3.2.2",
     "discord.js": "^11.4.2",
     "overwatch-api": "^0.7.2",
     "request": "^2.88.0",
